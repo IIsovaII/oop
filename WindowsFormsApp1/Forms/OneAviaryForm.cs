@@ -60,8 +60,6 @@ namespace WindowsFormsApp1
             if (listBox1.SelectedIndex != -1)
             {
                 localAviary.Animals()[listBox1.SelectedIndex].ShowStatus();
-
-                label3.Text = localAviary.Animals().ToString();
             }
         }
 
@@ -77,7 +75,7 @@ namespace WindowsFormsApp1
             {
                 listBox1.Items.Add(type);
             }
-            label3.Text = localAviary.Animals().Count.ToString();
+            label3.Text = localAviary.Animals().Count().ToString();
         }
 
         // edit

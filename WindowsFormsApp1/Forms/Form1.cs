@@ -127,8 +127,7 @@ namespace WindowsFormsApp1
             if (listBox1.SelectedIndex != -1)
             {
                 MessageBox.Show("You can't remove the aviary");
-
-                listBox1.Items.RemoveAt(listBox1.SelectedIndex);
+                listBox1.SetSelected(listBox1.SelectedIndex, false);
             }
             else if (listBox2.SelectedIndex != -1)
             {
