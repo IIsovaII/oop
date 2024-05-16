@@ -68,11 +68,11 @@
     <Compile Include="Forms\EditWorkerForm.Designer.cs">
       <DependentUpon>EditWorkerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Form1.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\AddAimalForm.cs">
       <SubType>Form</SubType>
@@ -100,7 +100,7 @@
     </Compile>
     <Compile Include="Classes\Fox.cs" />
     <Compile Include="Classes\Frog.cs" />
-    <Compile Include="IAviary.cs" />
+    <Compile Include="Interfaces\IAviary.cs" />
     <Compile Include="Forms\OneAviaryForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,11 +110,11 @@
     <Compile Include="Classes\Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\selectAdd.cs">
+    <Compile Include="Forms\SelectAddForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\selectAdd.Designer.cs">
-      <DependentUpon>selectAdd.cs</DependentUpon>
+    <Compile Include="Forms\SelectAddForm.Designer.cs">
+      <DependentUpon>SelectAddForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\Visitor.cs" />
     <Compile Include="Classes\Worker.cs" />
@@ -128,8 +128,8 @@
     <EmbeddedResource Include="Forms\EditWorkerForm.resx">
       <DependentUpon>EditWorkerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AddAimalForm.resx">
       <DependentUpon>AddAimalForm.cs</DependentUpon>
@@ -156,8 +156,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Forms\selectAdd.resx">
-      <DependentUpon>selectAdd.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\SelectAddForm.resx">
+      <DependentUpon>SelectAddForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -172,5 +172,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public partial class selectAdd : Form
+    public partial class SelectAddForm : Form
     {
-        public selectAdd()
+        public SelectAddForm()
         {
             InitializeComponent();
         }

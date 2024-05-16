@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp1
 {
-    partial class selectAdd
+    partial class SelectAddForm
     {
         /// <summary>
         /// Required designer variable.

@@ -14,9 +14,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsFormsApp1
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -106,7 +106,7 @@ namespace WindowsFormsApp1
         // add
         private void button1_Click(object sender, EventArgs e)
         {
-            selectAdd subform = new selectAdd();
+            SelectAddForm subform = new SelectAddForm();
             subform.ShowDialog();
             string results = subform.CommunicationType;
 
