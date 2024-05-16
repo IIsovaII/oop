@@ -32,6 +32,7 @@ namespace WindowsFormsApp1
             radioButton1.CheckedChanged += new EventHandler(radioButton_CheckedChanged);
             radioButton2.CheckedChanged += new EventHandler(radioButton_CheckedChanged);
             radioButton3.CheckedChanged += new EventHandler(radioButton_CheckedChanged);
+            radioButton4.CheckedChanged += new EventHandler(radioButton_CheckedChanged);
             button1.Click += new EventHandler(getSelectedRB_Click);
 
         }
@@ -45,7 +46,14 @@ namespace WindowsFormsApp1
         void getSelectedRB_Click(object sender, EventArgs e)
         {
             this.CommunicationType = selectedrb.Text;
-            if (selectedrb.Text == "Animal")
+            if (selectedrb.Text == "Aviary")
+            {
+                AddAviaryForm subform = new AddAviaryForm();
+                subform.ShowDialog();
+
+                this.CommunicationStuff = subform.CommunicationStuff;
+            }
+            else if (selectedrb.Text == "Animal")
             {
                 AddAimalForm subform = new AddAimalForm();
                 subform.ShowDialog();
@@ -69,7 +77,5 @@ namespace WindowsFormsApp1
 
             this.Close();
         }
-
-        
     }
 }

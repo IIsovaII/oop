@@ -14,16 +14,19 @@ namespace WindowsFormsApp1
         private bool isHungry;
         private int hungerLimit;
         private string voise;
+        private bool isVisible;
 
         public string name { get => _name; set => _name = value; }
         public int HungerPoints { get => hungerPoints; set => hungerPoints = value; }
         public int HungerLimit { get => hungerLimit; set => hungerLimit = value; }
         public string Voise { get => voise; set => voise = value; }
+        public bool IsVisible { get => isVisible; set => isVisible = value; }
 
         public Animal(int hungerPoints = 0, bool isHungry = false)
         {
             this.HungerPoints = hungerPoints;
             this.isHungry = isHungry;
+            this.isVisible = true;
         }
 
         public bool IsHungry()
@@ -46,7 +49,8 @@ namespace WindowsFormsApp1
         {
             MessageBox.Show($"Type: {this.name}\n" +
                             $"Hunger points: {this.HungerPoints} / {this.HungerLimit}\n" +
-                            (isHungry ? "I'm hungry!" : "I'm full"));
+                            (isHungry ? "I'm hungry!" : "I'm full") + "\n"+
+                            (isVisible ? "Visible" : "Hiding"));
         }
 
         public void Feeding()

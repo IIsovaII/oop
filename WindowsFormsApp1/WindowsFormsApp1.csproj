@@ -8,10 +8,11 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>WindowsFormsApp1</RootNamespace>
     <AssemblyName>WindowsFormsApp1</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -46,7 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddAviaryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddAviaryForm.Designer.cs">
+      <DependentUpon>AddAviaryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Animal.cs" />
+    <Compile Include="Aviary.cs" />
     <Compile Include="Cat.cs" />
     <Compile Include="EditVisitorForm.cs">
       <SubType>Form</SubType>
@@ -92,6 +100,13 @@
     </Compile>
     <Compile Include="Fox.cs" />
     <Compile Include="Frog.cs" />
+    <Compile Include="IAviary.cs" />
+    <Compile Include="OneAviaryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OneAviaryForm.Designer.cs">
+      <DependentUpon>OneAviaryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,6 +119,9 @@
     <Compile Include="Visitor.cs" />
     <Compile Include="Worker.cs" />
     <Compile Include="Zoo.cs" />
+    <EmbeddedResource Include="AddAviaryForm.resx">
+      <DependentUpon>AddAviaryForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditVisitorForm.resx">
       <DependentUpon>EditVisitorForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditAnimalForm.resx">
       <DependentUpon>EditAnimalForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OneAviaryForm.resx">
+      <DependentUpon>OneAviaryForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

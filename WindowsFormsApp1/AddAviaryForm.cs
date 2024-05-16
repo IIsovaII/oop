@@ -11,14 +11,14 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsFormsApp1
 {
-    public partial class AddVisitorForm : Form
+    public partial class AddAviaryForm : Form
     {
-        public AddVisitorForm()
+        public AddAviaryForm()
         {
             InitializeComponent();
         }
 
-        private void Form4_Load(object sender, EventArgs e)
+        private void AddAviaryForm_Load(object sender, EventArgs e)
         {
             button1.Click += new EventHandler(getSelectedRB_Click);
         }
@@ -30,9 +30,7 @@ namespace WindowsFormsApp1
         {
             CommunicationStuff.Add(textBox1.Text);
             CommunicationStuff.Add(textBox2.Text);
-            CommunicationStuff.Add(textBox3.Text);
             this.Close();
         }
-
     }
 }

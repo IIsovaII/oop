@@ -12,16 +12,16 @@ namespace WindowsFormsApp1
     public class Worker : Person
     {
         private string _job;
-        private int _animalForCare;
+        private int _aviaryForCare;
         private bool isBuzy { get; set; }
 
         public string job { get => _job; set => _job = value; }
-        public int animalForCare { get => _animalForCare; set => _animalForCare = value; }
+        public int aviaryForCare { get => _aviaryForCare; set => _aviaryForCare = value; }
 
         public Worker(string Name, string Sex, string job, int an, bool isBuzy = false) : base(Name, Sex)
         {
             this._job = job;
-            this._animalForCare = an;
+            this._aviaryForCare = an;
             this.isBuzy = isBuzy;
         }
 

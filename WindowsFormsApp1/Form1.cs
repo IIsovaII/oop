@@ -19,28 +19,72 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
-
-            timer1.Interval = 2000; // 2 seconds
-            timer1.Enabled = true;
-            timer1.Tick += Timer1_Tick;
         }
 
         public Zoo zoo = new Zoo();
-
-        private void Timer1_Tick(object sender, EventArgs e)
+        private bool time;
+        private void Form1_Load(object sender, EventArgs e)
         {
-            zoo.Feeding();
+            timer1.Interval = 2000; // 2 seconds
+            timer1.Enabled = true;
+            timer1.Tick += Timer1_Tick;
 
-            label8.Text = "timer is active";
+            time = true;
+
+            for (int i = 0; i < zoo.aviaries.Count; i++)
+            {
+                listBox1.Items.Add($"aviary {i + 1}");
+            }
+        }
+
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (time)
+            {
+                timer1.Stop();
+                time = false;
+
+                label8.Text = "timer is stoped";
+            }
+            else
+            {
+                timer1.Start();
+                time = true;
+
+                label8.Text = "timer is active";
+            }
         }
 
         
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+            label8.Text = "timer is active";
+
+            zoo.Eat();
+            zoo.Feeding();
+            zoo.Delicacy();
+            zoo.HungerGrow();
+
+            zoo.timerTicks++;
+            zoo.Moving();
+        }
+
+        public void AddAviary(List<string> a)
+        {
+            zoo.AddAviary(a);
+
+            listBox1.Items.Add($"aviary {zoo.aviaries.Count()}");
+            label5.Text = zoo.aviaries.Count.ToString();
+        }
+
         public void AddAnimal(string animalType)
         {
-            zoo.AddAnimal(animalType);
-
-            listBox1.Items.Add(animalType);
-            label5.Text = zoo.animals.Count.ToString();
+            if (!zoo.AddAnimal(animalType))
+            {
+                listBox1.Items.Add($"aviary {zoo.aviaries.Count()}");
+                label5.Text = zoo.aviaries.Count.ToString();
+            }
         }
 
         public void AddWorker(List<string> w)
@@ -62,22 +106,18 @@ namespace WindowsFormsApp1
         // add
         private void button1_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
-            label8.Text = "timer is stoped";
-
             selectAdd subform = new selectAdd();
             subform.ShowDialog();
             string results = subform.CommunicationType;
 
-            if (results == "Animal")
+            if (results == "Aviary")
+                AddAviary(subform.CommunicationStuff);
+            else if (results == "Animal")
                 AddAnimal(subform.CommunicationStuff[0]);
             else if (results == "Worker")
                 AddWorker(subform.CommunicationStuff);
             else if (results == "Visitor")
                 AddVisitor(subform.CommunicationStuff);
-
-            timer1.Start();
-            label8.Text = "timer is active";
         }
 
 
@@ -86,10 +126,9 @@ namespace WindowsFormsApp1
         {
             if (listBox1.SelectedIndex != -1)
             {
-                zoo.Remove("animal", listBox1.SelectedIndex);
+                MessageBox.Show("You can't remove the aviary");
 
                 listBox1.Items.RemoveAt(listBox1.SelectedIndex);
-                label5.Text = zoo.animals.Count.ToString();
             }
             else if (listBox2.SelectedIndex != -1)
             {
@@ -107,26 +146,19 @@ namespace WindowsFormsApp1
             }
         }
 
-        //voise
-        private void button5_Click(object sender, EventArgs e)
-        {
-            if (listBox1.SelectedIndex != -1)
-            {
-                zoo.animals[listBox1.SelectedIndex].VoiseFunc();
-
-                listBox1.SetSelected(listBox1.SelectedIndex, false);
-            }
-        }
 
         //status
         private void button4_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
-            label8.Text = "timer is stoped";
-
             if (listBox1.SelectedIndex != -1)
             {
-                zoo.animals[listBox1.SelectedIndex].ShowStatus();
+                using (var form = new OneAviaryForm())
+                {
+                    form.localAviary = zoo.aviaries[listBox1.SelectedIndex];
+                    form.ShowDialog();
+                    zoo.aviaries[listBox1.SelectedIndex] = form.localAviary;
+                }
+                
 
                 listBox1.SetSelected(listBox1.SelectedIndex, false);
             }
@@ -138,32 +170,18 @@ namespace WindowsFormsApp1
             }
             else if (listBox3.SelectedIndex != -1)
             {
-                zoo.people[listBox3.SelectedIndex].showStatus();
+                zoo.people[listBox3.SelectedIndex].ShowStatus();
 
                 listBox3.SetSelected(listBox3.SelectedIndex, false);
             }
-
-            timer1.Start();
-            label8.Text = "timer is active";
         }
 
         //edit
         private void button3_Click(object sender, EventArgs e)
         {
-            timer1.Stop();
-            label8.Text = "timer is stoped";
-
             if (listBox1.SelectedIndex != -1)
             {
-                using (var searchForm = new EditAnimalForm())
-                {
-                    searchForm.localAnimal = zoo.animals[(int)listBox1.SelectedIndex];
-                    searchForm.ShowDialog();
-                    zoo.animals[listBox1.SelectedIndex] = searchForm.localAnimal;
-
-                    listBox1.Items[listBox1.SelectedIndex] = searchForm.localAnimal.name;
-                }
-                listBox1.SetSelected(listBox1.SelectedIndex, false);
+                MessageBox.Show("You can't edit the aviary");
             }
             else if (listBox2.SelectedIndex != -1)
             {
@@ -189,9 +207,7 @@ namespace WindowsFormsApp1
                 }
                 listBox3.SetSelected(listBox3.SelectedIndex, false);
             }
-
-            timer1.Start();
-            label8.Text = "timer is active";
         }
+               
     }
 }
