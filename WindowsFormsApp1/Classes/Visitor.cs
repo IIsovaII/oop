@@ -27,5 +27,15 @@ namespace WindowsFormsApp1
         {
             wallet -= money;
         }
+
+        public void Delicacy(List<IAviary> aviaries)
+        {
+            var rand = new Random();
+            if (this.Wallet > 0 && aviaries.Count() > 0)
+            {
+                int i = rand.Next(aviaries.Count() - 1);
+                aviaries[i].Delicacy(this);
+            }
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace WindowsFormsApp1
                 else if (r == 1) type = "Frog";
                 else type = "Fox";
 
-                this.AddAnimal(type);
+                AddAnimal(type);
             }
         }
 
@@ -65,19 +65,19 @@ namespace WindowsFormsApp1
 
         public void AddAviary(List<string> a)
         {
-            this.aviaries.Add(new Aviary(new List<Animal>(), 
+            aviaries.Add(new Aviary(new List<Animal>(),
                 Int32.Parse(a[0]), 0, Int32.Parse(a[1])));
         }
 
         public void AddVisitor(List<string> p)
         {
-            this.people.Add(new Visitor(p[0], p[1], Int32.Parse(p[2])));
+            people.Add(new Visitor(p[0], p[1], Int32.Parse(p[2])));
         }
 
         public void AddWorker(List<string> w)
         {
             var rand = new Random();
-            this.workers.Add(new Worker(w[0], w[1], w[2], rand.Next(this.aviaries.Count()), false));
+            workers.Add(new Worker(w[0], w[1], w[2], rand.Next(aviaries.Count()), false));
         }
 
         public void Remove(string type, int index)
@@ -85,55 +85,31 @@ namespace WindowsFormsApp1
             // удаленеи животного внутри вольера
             if (type == "worker")
             {
-                this.workers.RemoveAt(index);
+                workers.RemoveAt(index);
                 return;
             }
-            this.people.RemoveAt(index);
+            people.RemoveAt(index);
         }
 
         public void Delicacy()
         {
-            foreach (var v in this.people)
+            foreach (var v in people)
             {
-                var rand = new Random();
-                if (v.Wallet > 0 && this.aviaries.Count() > 0) { 
-                    int i = rand.Next(this.aviaries.Count()-1);
-                    foreach (Animal a in this.aviaries[i].Animals())
-                    {
-                        if (a.IsVisible && a.IsHungry()) 
-                        {
-                            a.Feeding();
-                            v.BuySomething(5);
-                        }
-                    }
-                }
+                v.Delicacy(aviaries);
             }
         }
 
         public void Feeding()
         {
-            foreach (Worker w in this.workers)
-                if (w.IsBuzy()) w.BuzyChange();
-
-            for (int i = 0; i < this.aviaries.Count; i++)
+            foreach (Worker w in workers)
             {
-                if (aviaries[i].ShowFeederFullness() < aviaries[i].ShowSize())
-                {
-                    foreach (Worker w in this.workers)
-                    {
-                        if (!w.IsBuzy() && Math.Min(w.aviaryForCare, aviaries.Count() - 1) == i)
-                        {
-                            w.BuzyChange();
-                            aviaries[i].PlusFeed(1);
-                        }
-                    }
-                }
+                w.Feeding(aviaries[w.aviaryForCare]);
             }
         }
 
         public void HungerGrow()
         {
-            foreach (IAviary a in this.aviaries)
+            foreach (IAviary a in aviaries)
             {
                 foreach (Animal an in a.Animals())
                     an.PlusHungry();
@@ -143,7 +119,7 @@ namespace WindowsFormsApp1
 
         public void Eat()
         {
-            foreach (IAviary a in this.aviaries)
+            foreach (IAviary a in aviaries)
             {
                 a.AnimalsEating();
             }
@@ -152,7 +128,7 @@ namespace WindowsFormsApp1
         public void Moving()
         {
             if (timerTicks % 5 == N)
-                foreach (IAviary a in this.aviaries) 
+                foreach (IAviary a in aviaries)
                     a.Moving();
         }
     }

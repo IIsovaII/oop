@@ -94,5 +94,17 @@ namespace WindowsFormsApp1
                 }
             }
         }
+
+        public void Delicacy(Visitor visitor)
+        {
+            foreach (Animal a in this.animals)
+            {
+                if (a.IsVisible && a.IsHungry())
+                {
+                    a.Feeding();
+                    visitor.BuySomething(5);
+                }
+            }
+        }
     }
 }

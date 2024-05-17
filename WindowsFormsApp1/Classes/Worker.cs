@@ -33,7 +33,7 @@ namespace WindowsFormsApp1
                             (isBuzy ? "I'm buzy!" : "I'm free"));
         }
 
-        public void BuzyChange()
+        private void BuzyChange()
         {
             this.isBuzy = !this.isBuzy;
         }
@@ -41,6 +41,17 @@ namespace WindowsFormsApp1
         public bool IsBuzy()
         {
             return this.isBuzy;
+        }
+
+        public void Feeding(IAviary aviary)
+        {
+            if (isBuzy) this.BuzyChange();
+
+            if (aviary.ShowFeederFullness() < aviary.ShowSize())
+            {
+                this.BuzyChange();
+                aviary.PlusFeed(1);
+            }
         }
     }
 }

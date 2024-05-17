@@ -22,5 +22,7 @@ namespace WindowsFormsApp1
         int ShowFeederFullness();
 
         void AnimalsEating();
+
+        void Delicacy(Visitor visitor);
     }
 }
