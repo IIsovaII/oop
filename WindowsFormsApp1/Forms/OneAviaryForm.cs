@@ -18,6 +18,7 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
+        public List<Entity> entities;
         public IAviary localAviary;
 
         private void OneAviaryForm_Load(object sender, EventArgs e)
@@ -27,7 +28,8 @@ namespace WindowsFormsApp1
 
             for (int i = 0; i < localAviary.Animals().Count(); i++)
             {
-                listBox1.Items.Add(localAviary.Animals()[i].name);
+                Animal animal = (Animal)entities.Find(x => x.Id == localAviary.Animals()[i]);
+                listBox1.Items.Add(animal.name);
             }
         }
 
@@ -36,7 +38,8 @@ namespace WindowsFormsApp1
         {
             if (listBox1.SelectedIndex != -1)
             {
-                MessageBox.Show(localAviary.Animals()[listBox1.SelectedIndex].Voise);
+                Animal animal = (Animal)entities.Find(x => x.Id == localAviary.Animals()[listBox1.SelectedIndex]);
+                MessageBox.Show(animal.Voise);
 
                 listBox1.SetSelected(listBox1.SelectedIndex, false);
             }
@@ -47,6 +50,8 @@ namespace WindowsFormsApp1
         {
             if (listBox1.SelectedIndex != -1)
             {
+                entities.Remove(entities.Find(x => x.Id == localAviary.Animals()[listBox1.SelectedIndex]));
+
                 localAviary.Animals().RemoveAt(listBox1.SelectedIndex);
 
                 listBox1.Items.RemoveAt(listBox1.SelectedIndex);
@@ -59,7 +64,7 @@ namespace WindowsFormsApp1
         {
             if (listBox1.SelectedIndex != -1)
             {
-                localAviary.Animals()[listBox1.SelectedIndex].ShowStatus();
+                entities.Find(x => x.Id == localAviary.Animals()[listBox1.SelectedIndex]).ShowStatus();
             }
         }
 
@@ -85,9 +90,13 @@ namespace WindowsFormsApp1
             {
                 using (var editForm = new EditAnimalForm())
                 {
-                    editForm.localAnimal = localAviary.Animals()[(int)listBox1.SelectedIndex];
+                    editForm.localAnimal = (Animal)entities.Find(x => x.Id == localAviary.Animals()[listBox1.SelectedIndex]);
                     editForm.ShowDialog();
-                    localAviary.Animals()[listBox1.SelectedIndex] = editForm.localAnimal;
+
+                    Animal a = editForm.localAnimal;
+                    entities.Remove(entities.Find(x => x.Id == localAviary.Animals()[listBox1.SelectedIndex]));
+                    entities.Add(a);
+                    localAviary.Animals()[listBox1.SelectedIndex] = a.Id;
 
                     listBox1.Items[listBox1.SelectedIndex] = editForm.localAnimal.name;
                 }

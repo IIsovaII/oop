@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public class Person
+    public abstract class Person : Entity
     {
         private string _name;
         public string name { get => _name; set => _name = value; }
@@ -19,5 +19,7 @@ namespace WindowsFormsApp1
             name = Name;
             sex = Sex;
         }
+
+        public override abstract void ShowStatus();
     }
 }

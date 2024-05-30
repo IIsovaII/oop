@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    public class Animal
+    public class Animal : Entity
     {
         private string _name;
         private int hungerPoints;
@@ -15,18 +11,21 @@ namespace WindowsFormsApp1
         private int hungerLimit;
         private string voise;
         private bool isVisible;
+        private List<Food> food;
 
         public string name { get => _name; set => _name = value; }
         public int HungerPoints { get => hungerPoints; set => hungerPoints = value; }
         public int HungerLimit { get => hungerLimit; set => hungerLimit = value; }
         public string Voise { get => voise; set => voise = value; }
         public bool IsVisible { get => isVisible; set => isVisible = value; }
+        public List<Food> Food { get => food; set => food = value; }
 
-        public Animal(int hungerPoints = 0, bool isHungry = false)
+        public Animal(int hungerPoints = 0, bool isHungry = false, List<Food> food = null)
         {
             this.HungerPoints = hungerPoints;
             this.isHungry = isHungry;
             this.isVisible = true;
+            this.Food = food;
         }
 
         public bool IsHungry()
@@ -45,11 +44,11 @@ namespace WindowsFormsApp1
             MessageBox.Show(Voise);
         }
 
-        public void ShowStatus()
+        public override void ShowStatus()
         {
             MessageBox.Show($"Type: {this.name}\n" +
                             $"Hunger points: {this.HungerPoints} / {this.HungerLimit}\n" +
-                            (isHungry ? "I'm hungry!" : "I'm full") + "\n"+
+                            (isHungry ? "I'm hungry!" : "I'm full") + "\n" +
                             (isVisible ? "Visible" : "Hiding"));
         }
 

@@ -16,6 +16,7 @@ namespace WindowsFormsApp1
             this.name = name;
             this.HungerLimit = hungerLimit;
             this.Voise = voise;
+            this.Food = new List<Food> { new Birds(), new Humsters() };
         }
     }
 }

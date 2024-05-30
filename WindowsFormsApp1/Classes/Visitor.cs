@@ -18,7 +18,7 @@ namespace WindowsFormsApp1
 
         public int Wallet { get => wallet; set => wallet = value; }
 
-        public void ShowStatus()
+        public override void ShowStatus()
         {
             MessageBox.Show(name + "\n" + sex);
         }

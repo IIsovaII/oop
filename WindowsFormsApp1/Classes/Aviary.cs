@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WindowsFormsApp1
 {
@@ -12,17 +8,22 @@ namespace WindowsFormsApp1
     public class Aviary : IAviary
     {
         private int size;
-        private List<Animal> animals = new List<Animal>();
+        private List<Guid> animals = new List<Guid>();
         private int feederSize;
         private int feederFullness;
+        public List<Entity> entities;
+        private Food FoodForFeed;
 
-        public Aviary(List<Animal> animals, int feederSize, int feederFullness, int size)
+
+        public Aviary(List<Guid> animals, int feederSize, int feederFullness, int size, List<Entity> entities)
         {
 
             this.animals = animals;
             this.feederSize = feederSize;
             this.feederFullness = feederFullness;
             this.size = size;
+            this.entities = entities;
+            newFood();
         }
 
         public void PlusFeed(int feedPoints)
@@ -30,7 +31,7 @@ namespace WindowsFormsApp1
             feederFullness += feedPoints;
         }
 
-        public string  AddAnimal()
+        public string AddAnimal()
         {
             string type = "None";
             if (animals.Count == 0)
@@ -40,23 +41,48 @@ namespace WindowsFormsApp1
                 type = (subform.CommunicationStuff[0]);
 
                 if (type == "Cat")
-                    this.animals.Add(new Cat());
+                {
+                    Cat a = new Cat();
+                    entities.Add(a);
+                    this.animals.Add(a.Id);
+                }
                 else if (type == "Frog")
-                    this.animals.Add(new Frog());
+                {
+                    Frog a = new Frog();
+                    entities.Add(a);
+                    this.animals.Add(a.Id);
+                }
                 else
-                    this.animals.Add(new Fox());
-
+                {
+                    Fox a = new Fox();
+                    entities.Add(a);
+                    this.animals.Add(a.Id);
+                }
                 return type;
             }
             if (this.animals.Count < size)
             {
-                type = this.animals[0].name;
+                Animal animal = (Animal)entities.FirstOrDefault(x => x.Id == this.animals[0]);
+                type = animal.name;
+
                 if (type == "Cat")
-                    this.animals.Add(new Cat());
+                {
+                    Cat a = new Cat();
+                    entities.Add(a);
+                    this.animals.Add(a.Id);
+                }
                 else if (type == "Frog")
-                    this.animals.Add(new Frog());
+                {
+                    Frog a = new Frog();
+                    entities.Add(a);
+                    this.animals.Add(a.Id);
+                }
                 else
-                    this.animals.Add(new Fox());
+                {
+                    Fox a = new Fox();
+                    entities.Add(a);
+                    this.animals.Add(a.Id);
+                }
             }
             return type;
         }
@@ -64,11 +90,14 @@ namespace WindowsFormsApp1
         public void Moving()
         {
             Random random = new Random();
-            foreach (Animal an in animals)
-                an.IsVisible = (random.Next(10) % 2 == 0);
+            foreach (Guid an in animals)
+            {
+                Animal animal = (Animal)entities.FirstOrDefault(x => x.Id == an);
+                animal.IsVisible = (random.Next(10) % 2 == 0);
+            }
         }
 
-        public List<Animal> Animals()
+        public List<Guid> Animals()
         {
             return animals;
         }
@@ -85,11 +114,12 @@ namespace WindowsFormsApp1
 
         public void AnimalsEating()
         {
-            foreach (Animal an in animals)
+            foreach (Guid an in animals)
             {
-                if (feederFullness > 0 && an.IsHungry())
+                Animal animal = (Animal)entities.FirstOrDefault(x => x.Id == an);
+                if (feederFullness > 0 && animal.IsHungry())
                 {
-                    an.Feeding();
+                    animal.Feeding();
                     feederFullness -= 1;
                 }
             }
@@ -97,13 +127,33 @@ namespace WindowsFormsApp1
 
         public void Delicacy(Visitor visitor)
         {
-            foreach (Animal a in this.animals)
+            foreach (Guid an in this.animals)
             {
-                if (a.IsVisible && a.IsHungry())
+                Animal animal = (Animal)entities.FirstOrDefault(x => x.Id == an);
+                if (animal.IsVisible && animal.IsHungry())
                 {
-                    a.Feeding();
+                    animal.Feeding();
                     visitor.BuySomething(5);
                 }
+            }
+        }
+
+        public List<Food> ShowFoodForFeed()
+        {
+            Animal animal = (Animal)entities.FirstOrDefault(x => x.Id == animals[0]);
+            return animal.Food;
+        }
+
+        public void newFood()
+        {
+            Random rand = new Random();
+            if (animals.Count() == 0)
+                FoodForFeed = new Food();
+            else
+            {
+                Animal animal = (Animal)entities.FirstOrDefault(x => x.Id == this.animals[0]);
+                int n = rand.Next(animal.Food.Count());
+                FoodForFeed = animal.Food[n];
             }
         }
     }

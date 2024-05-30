@@ -25,7 +25,7 @@ namespace WindowsFormsApp1
             this.isBuzy = isBuzy;
         }
 
-        public void showStatus()
+        public override void ShowStatus()
         {
             MessageBox.Show($"Name: {this.name}\n" + 
                             $"Sex: {this.sex}\n" + 
@@ -47,11 +47,18 @@ namespace WindowsFormsApp1
         {
             if (isBuzy) this.BuzyChange();
 
+            
+            /*List<Food> FoodForFeed = aviary.ShowFoodForFeed();*/
+
             if (aviary.ShowFeederFullness() < aviary.ShowSize())
             {
                 this.BuzyChange();
                 aviary.PlusFeed(1);
             }
         }
+
+        // определение какой корм приносить в вольер
+        // переопределять корм для вольера 1) при нуле заполненности кормом
+        // 2) обнуление заполненности кормом вольера при исчезновении животных
     }
 }

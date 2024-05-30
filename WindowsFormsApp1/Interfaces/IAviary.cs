@@ -15,7 +15,7 @@ namespace WindowsFormsApp1
 
         void Moving();
 
-        List<Animal> Animals();
+        List<Guid> Animals();
 
         int ShowSize();
 
@@ -24,5 +24,9 @@ namespace WindowsFormsApp1
         void AnimalsEating();
 
         void Delicacy(Visitor visitor);
+
+        List<Food> ShowFoodForFeed();
+
+        void newFood();
     }
 }

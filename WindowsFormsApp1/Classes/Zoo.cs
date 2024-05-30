@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
     public class Zoo
     {
+        public List<Entity> entities;
+
         public List<IAviary> aviaries;
-        public List<Worker> workers;
-        public List<Visitor> people;
+        public List<Guid> workers;
+        public List<Guid> people;
+
 
         public int timerTicks = 0;
         private int N = 0; // раз в N тиков животные будут переходить
 
+
         public Zoo()
         {
+            entities = new List<Entity>();
             aviaries = new List<IAviary>();
-            workers = new List<Worker>();
-            people = new List<Visitor>();
+            workers = new List<Guid>();
+            people = new List<Guid>();
 
             Random random = new Random();
             string type;
@@ -36,25 +37,51 @@ namespace WindowsFormsApp1
             }
         }
 
+        public void AddEntity<T>(T entity) where T : Entity
+        {
+            entities.Add(entity);
+        }
+
 
         private void AddAnimalWithType(int index, string type)
         {
             if (type == "Cat")
-                aviaries[index].Animals().Add(new Cat());
+            {
+                Cat a = new Cat();
+                AddEntity(a);
+                aviaries[index].Animals().Add(a.Id);
+            }
             else if (type == "Frog")
-                aviaries[index].Animals().Add(new Frog());
+            {
+                Frog a = new Frog();
+                AddEntity(a);
+                aviaries[index].Animals().Add(a.Id);
+            }
             else
-                aviaries[index].Animals().Add(new Fox());
+            {
+                Fox a = new Fox();
+                AddEntity(a);
+                aviaries[index].Animals().Add(a.Id);
+            }
         }
 
         public bool AddAnimal(string animalType)
         {
             for (int i = 0; i < aviaries.Count; i++)
             {
-                if (aviaries[i].Animals().Count == 0 || (aviaries[i].Animals()[0].name == animalType && aviaries[i].Animals().Count() < aviaries[i].ShowSize()))
+                if (aviaries[i].Animals().Count == 0)
                 {
                     AddAnimalWithType(i, animalType);
                     return true;
+                }
+                else
+                {
+                    Animal animal = (Animal)entities.Find(x => x.Id == aviaries[i].Animals()[0]);
+                    if (animal.name == animalType && aviaries[i].Animals().Count() < aviaries[i].ShowSize())
+                    {
+                        AddAnimalWithType(i, animalType);
+                        return true;
+                    }
                 }
             }
 
@@ -65,19 +92,22 @@ namespace WindowsFormsApp1
 
         public void AddAviary(List<string> a)
         {
-            aviaries.Add(new Aviary(new List<Animal>(),
-                Int32.Parse(a[0]), 0, Int32.Parse(a[1])));
+            aviaries.Add(new Aviary(new List<Guid>(), Int32.Parse(a[0]), 0, Int32.Parse(a[1]), entities));
         }
 
         public void AddVisitor(List<string> p)
         {
-            people.Add(new Visitor(p[0], p[1], Int32.Parse(p[2])));
+            Visitor V = new Visitor(p[0], p[1], Int32.Parse(p[2]));
+            AddEntity(V);
+            people.Add(V.Id);
         }
 
         public void AddWorker(List<string> w)
         {
             var rand = new Random();
-            workers.Add(new Worker(w[0], w[1], w[2], rand.Next(aviaries.Count()), false));
+            Worker W = new Worker(w[0], w[1], w[2], rand.Next(aviaries.Count()), false);
+            AddEntity(W);
+            workers.Add(W.Id);
         }
 
         public void Remove(string type, int index)
@@ -93,17 +123,19 @@ namespace WindowsFormsApp1
 
         public void Delicacy()
         {
-            foreach (var v in people)
+            foreach (Guid v in people)
             {
-                v.Delicacy(aviaries);
+                Visitor vv = (Visitor)entities.FirstOrDefault(x => x.Id == v);
+                vv.Delicacy(aviaries);
             }
         }
 
         public void Feeding()
         {
-            foreach (Worker w in workers)
+            foreach (Guid w in workers)
             {
-                w.Feeding(aviaries[w.aviaryForCare]);
+                Worker ww = (Worker)entities.FirstOrDefault(x => x.Id == w);
+                ww.Feeding(aviaries[ww.aviaryForCare]);
             }
         }
 
@@ -111,11 +143,13 @@ namespace WindowsFormsApp1
         {
             foreach (IAviary a in aviaries)
             {
-                foreach (Animal an in a.Animals())
-                    an.PlusHungry();
+                foreach (Guid an in a.Animals())
+                {
+                    Animal animal = (Animal)entities.FirstOrDefault(x => x.Id == an);
+                    animal.PlusHungry();
+                }
             }
         }
-
 
         public void Eat()
         {
