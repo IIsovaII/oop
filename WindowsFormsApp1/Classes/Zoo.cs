@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WindowsFormsApp1;
 
 namespace WindowsFormsApp1
 {
@@ -9,20 +10,28 @@ namespace WindowsFormsApp1
         public List<Entity> entities;
 
         public List<IAviary> aviaries;
-        public List<Guid> workers;
-        public List<Guid> people;
+        /*public List<Guid> workers;
+        public List<Guid> people;*/
 
 
         public int timerTicks = 0;
         private int N = 0; // раз в N тиков животные будут переходить
 
+        public List<T> GetEntitiesByType<T>(T type) where T : Entity
+        {
+            var values = from x in entities where (x is T) select (T)x;
+            List<T> list = values.ToList();
+            
+
+            return list;
+        }
 
         public Zoo()
         {
             entities = new List<Entity>();
             aviaries = new List<IAviary>();
-            workers = new List<Guid>();
-            people = new List<Guid>();
+            /*workers = new List<Guid>();
+            people = new List<Guid>();*/
 
             Random random = new Random();
             string type;
@@ -92,14 +101,13 @@ namespace WindowsFormsApp1
 
         public void AddAviary(List<string> a)
         {
-            aviaries.Add(new Aviary(new List<Guid>(), Int32.Parse(a[0]), 0, Int32.Parse(a[1]), entities));
+            aviaries.Add(new Aviary(new List<Guid>(), Int32.Parse(a[0]), Int32.Parse(a[1]), entities));
         }
 
         public void AddVisitor(List<string> p)
         {
             Visitor V = new Visitor(p[0], p[1], Int32.Parse(p[2]));
             AddEntity(V);
-            people.Add(V.Id);
         }
 
         public void AddWorker(List<string> w)
@@ -107,7 +115,6 @@ namespace WindowsFormsApp1
             var rand = new Random();
             Worker W = new Worker(w[0], w[1], w[2], rand.Next(aviaries.Count()), false);
             AddEntity(W);
-            workers.Add(W.Id);
         }
 
         public void Remove(string type, int index)
@@ -115,27 +122,30 @@ namespace WindowsFormsApp1
             // удаленеи животного внутри вольера
             if (type == "worker")
             {
-                workers.RemoveAt(index);
+                var workers = GetEntitiesByType(new Worker());
+                entities.Remove(workers[index]);
                 return;
             }
-            people.RemoveAt(index);
+            var people = GetEntitiesByType(new Visitor());
+
+            entities.Remove(people[index]);
+
+            people.Sort(new visitorComparer());
         }
 
         public void Delicacy()
         {
-            foreach (Guid v in people)
+            foreach (Visitor v in GetEntitiesByType(new Visitor()).Cast<Visitor>())
             {
-                Visitor vv = (Visitor)entities.FirstOrDefault(x => x.Id == v);
-                vv.Delicacy(aviaries);
+                v.Delicacy(aviaries);
             }
         }
 
         public void Feeding()
         {
-            foreach (Guid w in workers)
+            foreach (Worker w in GetEntitiesByType(new Worker()).Cast<Worker>())
             {
-                Worker ww = (Worker)entities.FirstOrDefault(x => x.Id == w);
-                ww.Feeding(aviaries[ww.aviaryForCare]);
+                w.Feeding(aviaries[w.aviaryForCare]);
             }
         }
 

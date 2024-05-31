@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Linq;
+﻿using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
@@ -18,7 +11,7 @@ namespace WindowsFormsApp1
         public string job { get => _job; set => _job = value; }
         public int aviaryForCare { get => _aviaryForCare; set => _aviaryForCare = value; }
 
-        public Worker(string Name, string Sex, string job, int an, bool isBuzy = false) : base(Name, Sex)
+        public Worker(string Name = "Joe", string Sex = "male", string job = "just_worker", int an = 0, bool isBuzy = false) : base(Name, Sex)
         {
             this._job = job;
             this._aviaryForCare = an;
@@ -27,8 +20,8 @@ namespace WindowsFormsApp1
 
         public override void ShowStatus()
         {
-            MessageBox.Show($"Name: {this.name}\n" + 
-                            $"Sex: {this.sex}\n" + 
+            MessageBox.Show($"Name: {this.name}\n" +
+                            $"Sex: {this.sex}\n" +
                             $"Job: {this.job}\n" +
                             (isBuzy ? "I'm buzy!" : "I'm free"));
         }
@@ -47,18 +40,12 @@ namespace WindowsFormsApp1
         {
             if (isBuzy) this.BuzyChange();
 
-            
-            /*List<Food> FoodForFeed = aviary.ShowFoodForFeed();*/
-
-            if (aviary.ShowFeederFullness() < aviary.ShowSize())
-            {
+            if (aviary.ShowFeederFullness() < aviary.ShowFoodForFeed().WeightLimit)
+            {   
                 this.BuzyChange();
-                aviary.PlusFeed(1);
+                aviary.PlusFeed(aviary.ShowFoodForFeed());
             }
+            
         }
-
-        // определение какой корм приносить в вольер
-        // переопределять корм для вольера 1) при нуле заполненности кормом
-        // 2) обнуление заполненности кормом вольера при исчезновении животных
     }
 }

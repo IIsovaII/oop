@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>WindowsFormsApp1</RootNamespace>
     <AssemblyName>WindowsFormsApp1</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Classes\Entity.cs" />
     <Compile Include="Classes\Food.cs" />
+    <Compile Include="Classes\visitorComaparer.cs" />
     <Compile Include="Forms\AddAviaryForm.cs">
       <SubType>Form</SubType>
     </Compile>

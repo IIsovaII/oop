@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace WindowsFormsApp1
 {
@@ -9,26 +10,24 @@ namespace WindowsFormsApp1
     {
         private int size;
         private List<Guid> animals = new List<Guid>();
-        private int feederSize;
         private int feederFullness;
         public List<Entity> entities;
         private Food FoodForFeed;
 
 
-        public Aviary(List<Guid> animals, int feederSize, int feederFullness, int size, List<Entity> entities)
+        public Aviary(List<Guid> animals, int feederFullness, int size, List<Entity> entities)
         {
 
             this.animals = animals;
-            this.feederSize = feederSize;
             this.feederFullness = feederFullness;
             this.size = size;
-            this.entities = entities;
+            this.entities = entities;   
             newFood();
         }
 
-        public void PlusFeed(int feedPoints)
+        public void PlusFeed<T>(T Feed) where T : Food 
         {
-            feederFullness += feedPoints;
+            feederFullness = Math.Min(feederFullness + Feed.Weight, Feed.WeightLimit);
         }
 
         public string AddAnimal()
@@ -36,6 +35,7 @@ namespace WindowsFormsApp1
             string type = "None";
             if (animals.Count == 0)
             {
+
                 AddAimalForm subform = new AddAimalForm();
                 subform.ShowDialog();
                 type = (subform.CommunicationStuff[0]);
@@ -58,6 +58,7 @@ namespace WindowsFormsApp1
                     entities.Add(a);
                     this.animals.Add(a.Id);
                 }
+                newFood();
                 return type;
             }
             if (this.animals.Count < size)
@@ -138,14 +139,17 @@ namespace WindowsFormsApp1
             }
         }
 
-        public List<Food> ShowFoodForFeed()
+        public Food ShowFoodForFeed()
         {
-            Animal animal = (Animal)entities.FirstOrDefault(x => x.Id == animals[0]);
-            return animal.Food;
+            if (this.animals.Count > 0 && FoodForFeed.Weight == 0)
+                newFood();
+            return FoodForFeed;
         }
 
         public void newFood()
         {
+            feederFullness = 0;
+
             Random rand = new Random();
             if (animals.Count() == 0)
                 FoodForFeed = new Food();
@@ -156,5 +160,6 @@ namespace WindowsFormsApp1
                 FoodForFeed = animal.Food[n];
             }
         }
+
     }
 }

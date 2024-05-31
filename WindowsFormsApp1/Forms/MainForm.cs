@@ -92,7 +92,8 @@ namespace WindowsFormsApp1
             zoo.AddWorker(w);
 
             listBox2.Items.Add(w[0]);
-            label6.Text = zoo.workers.Count.ToString();
+            var workers = zoo.GetEntitiesByType(new Worker());
+            label6.Text = workers.Count.ToString();
         }
 
         public void AddVisitor(List<string> p)
@@ -100,7 +101,8 @@ namespace WindowsFormsApp1
             zoo.AddVisitor(p);
 
             listBox3.Items.Add(p[0]);
-            label7.Text = zoo.people.Count.ToString();
+            var people = zoo.GetEntitiesByType(new Visitor());
+            label7.Text = people.Count.ToString();
         }
 
         // add
@@ -134,14 +136,16 @@ namespace WindowsFormsApp1
                 zoo.Remove("worker", listBox2.SelectedIndex);
 
                 listBox2.Items.RemoveAt(listBox2.SelectedIndex);
-                label6.Text = zoo.workers.Count.ToString();
+                var workers = zoo.GetEntitiesByType(new Worker());
+                label6.Text = workers.Count.ToString();
             }
             else if (listBox3.SelectedIndex != -1)
             {
                 zoo.Remove("Visitor", listBox3.SelectedIndex);
 
                 listBox3.Items.RemoveAt(listBox3.SelectedIndex);
-                label7.Text = zoo.people.Count.ToString();
+                var people = zoo.GetEntitiesByType(new Visitor());
+                label7.Text = people.Count.ToString();
             }
         }
 
@@ -164,13 +168,15 @@ namespace WindowsFormsApp1
             }
             else if (listBox2.SelectedIndex != -1)
             {
-                zoo.entities.FirstOrDefault(x => x.Id == zoo.workers[listBox2.SelectedIndex]).ShowStatus();
+                var workers = zoo.GetEntitiesByType(new Worker());
+                workers[listBox2.SelectedIndex].ShowStatus();
 
                 listBox2.SetSelected(listBox2.SelectedIndex, false);
             }
             else if (listBox3.SelectedIndex != -1)
             {
-                zoo.entities.FirstOrDefault(x => x.Id == zoo.people[listBox3.SelectedIndex]).ShowStatus();
+                var people = zoo.GetEntitiesByType(new Visitor());
+                people[listBox3.SelectedIndex].ShowStatus();
 
                 listBox3.SetSelected(listBox3.SelectedIndex, false);
             }
@@ -187,13 +193,15 @@ namespace WindowsFormsApp1
             {
                 using (var editForm = new EditWorkerForm())
                 {
-                    editForm.localWorker = (Worker)zoo.entities.Find(x => x.Id == zoo.workers[(int)listBox2.SelectedIndex]);
+                    var workers = zoo.GetEntitiesByType(new Worker());
+
+                    editForm.localWorker = (Worker)workers[listBox2.SelectedIndex];
                     editForm.ShowDialog();
 
                     Worker w = editForm.localWorker;
-                    zoo.entities.Remove(zoo.entities.FirstOrDefault(x => x.Id == zoo.workers[(int)listBox2.SelectedIndex]));
+                    zoo.entities.Remove(zoo.entities.FirstOrDefault(x => x.Id == workers[(int)listBox2.SelectedIndex].Id));
                     zoo.entities.Add(w);
-                    zoo.workers[listBox2.SelectedIndex] = w.Id;
+                    /*zoo.workers[listBox2.SelectedIndex] = w.Id;*/
 
                     listBox2.Items[listBox2.SelectedIndex] = editForm.localWorker.name;
                 }
@@ -203,13 +211,15 @@ namespace WindowsFormsApp1
             {
                 using (var editForm = new EditVisitorForm())
                 {
-                    editForm.localVisitor = (Visitor)zoo.entities.Find(x => x.Id == zoo.people[(int)listBox3.SelectedIndex]); 
+                    var people = zoo.GetEntitiesByType(new Visitor());
+
+                    editForm.localVisitor = (Visitor)people[listBox3.SelectedIndex]; 
                     editForm.ShowDialog();
 
                     Visitor v = editForm.localVisitor;
-                    zoo.entities.Remove(zoo.entities.FirstOrDefault(x => x.Id == zoo.people[(int)listBox3.SelectedIndex]));
+                    zoo.entities.Remove(zoo.entities.FirstOrDefault(x => x.Id == people[(int)listBox3.SelectedIndex].Id));
                     zoo.entities.Add(v);
-                    zoo.people[listBox3.SelectedIndex] = v.Id;
+                    /*zoo.people[listBox3.SelectedIndex] = v.Id;*/
 
                     listBox3.Items[listBox3.SelectedIndex] = editForm.localVisitor.name;
                 }

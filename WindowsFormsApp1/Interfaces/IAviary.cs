@@ -9,7 +9,7 @@ namespace WindowsFormsApp1
 {
     public interface IAviary
     {
-        void PlusFeed(int feedPoints);
+        void PlusFeed<T>(T Feed) where T : Food;
 
         string AddAnimal();
 
@@ -25,7 +25,7 @@ namespace WindowsFormsApp1
 
         void Delicacy(Visitor visitor);
 
-        List<Food> ShowFoodForFeed();
+        Food ShowFoodForFeed();
 
         void newFood();
     }

@@ -11,7 +11,7 @@ namespace WindowsFormsApp1
     public class Visitor : Person 
     {
         private int wallet;
-        public Visitor(string Name, string Sex, int wallet) : base(Name, Sex)
+        public Visitor(string Name = "Mary", string Sex = "female", int wallet = 10) : base(Name, Sex)
         {
             this.wallet = wallet;
         }
